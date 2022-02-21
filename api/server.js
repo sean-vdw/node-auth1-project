@@ -1,7 +1,7 @@
 const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
-const sessions = require('express-sessions');
+const session = require('express-session');
 
 const authRouter = require('./auth/auth-router');
 const usersRouter = require('./users/users-router');
@@ -24,7 +24,7 @@ const server = express();
 server.use(helmet());
 server.use(express.json());
 server.use(cors());
-server.use(sessions({
+server.use(session({
   name: 'chocolatechip',
   secret: 'super duper secret',
   cookie: {
@@ -36,6 +36,9 @@ server.use(sessions({
   resave: false,
   saveUninitialized: false
 }));
+
+server.use('/api/users', usersRouter);
+server.use('/api/auth', authRouter);
 
 server.get("/", (req, res) => {
   res.json({ api: "up" });
