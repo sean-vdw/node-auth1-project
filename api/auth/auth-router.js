@@ -28,7 +28,7 @@ const bcrypt = require('bcryptjs');
   }
  */
 
-  router.post('/register', checkPasswordLength, async (req, res, next) => {
+  router.post('/register', checkUsernameFree, checkPasswordLength, async (req, res, next) => {
     try {
       const { username, password } = req.body;
       const hash = bcrypt.hashSync(password, 8);

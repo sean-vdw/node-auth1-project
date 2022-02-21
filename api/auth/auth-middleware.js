@@ -25,14 +25,14 @@ function restricted(req, res, next) {
   }
 */
 async function checkUsernameFree(req, res, next) {
+ try {
   const { username } = req.body;
-  try {
-    const existing = await Users.findBy({ username });
-    if (existing === null || existing === undefined) {
-      next();
-    } else {
-      next({ status: 422, message: 'Username taken'});
-    }
+  const existing = await Users.findBy({ username });
+  if (existing.length) {
+    res.status(422).json({ message: 'Username taken' });
+  } else {
+    next();
+  }
   } catch(err) {
     next(err);
   };
